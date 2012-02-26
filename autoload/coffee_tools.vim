@@ -6,6 +6,9 @@ function! coffee_tools#OpenPreview()
   if bufwinnr(b:preview_file) < 0
     exe g:coffee_tools_split_command.' '.b:preview_file
     let b:original_file = expand('#')
+
+    doautocmd User CoffeeToolsPreviewOpened
+
     if !g:coffee_tools_autojump
       call coffee_tools#SwitchWindow(b:original_file)
     endif
