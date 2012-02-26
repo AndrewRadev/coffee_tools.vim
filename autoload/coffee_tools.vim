@@ -1,15 +1,32 @@
-function! coffee_tools#CoffeePreview()
+function! coffee_tools#CoffeePreviewOpen()
   if !exists('b:preview_file')
     call coffee_tools#InitPreview()
   endif
 
   if bufwinnr(b:preview_file) < 0
-    let original_buffer = bufnr('%')
-    exe 'split '.b:preview_file
-    call coffee_tools#SwitchWindow(original_buffer)
+    exe g:coffee_tools_split_command.' '.b:preview_file
+    let b:original_file = expand('#')
+    if !g:coffee_tools_autojump
+      call coffee_tools#SwitchWindow(b:original_file)
+    endif
   endif
 
   call coffee_tools#UpdatePreview()
+endfunction
+
+function! coffee_tools#CoffeePreviewClose()
+  if exists('b:preview_file') && bufwinnr(b:preview_file) >= 0
+    call coffee_tools#SwitchWindow(b:preview_file)
+    quit!
+  endif
+endfunction
+
+function! coffee_tools#CoffeePreviewToggle()
+  if !exists('b:preview_file') || bufwinnr(b:preview_file) < 0
+    call coffee_tools#CoffeePreviewOpen()
+  else
+    call coffee_tools#CoffeePreviewClose()
+  endif
 endfunction
 
 function! coffee_tools#InitPreview()
