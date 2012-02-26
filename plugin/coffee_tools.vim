@@ -17,3 +17,5 @@ endif
 command! CoffeePreviewOpen   call coffee_tools#OpenPreview()
 command! CoffeePreviewClose  call coffee_tools#ClosePreview()
 command! CoffeePreviewToggle call coffee_tools#TogglePreview()
+
+nnoremap <Plug>CoffeeToolsDeleteLineAndDedent :call coffee_tools#DeleteLineAndDedent()<cr>

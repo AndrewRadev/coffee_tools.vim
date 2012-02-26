@@ -61,3 +61,20 @@ function! coffee_tools#SwitchWindow(bufname)
   let window = bufwinnr(a:bufname)
   exe window.'wincmd w'
 endfunction
+
+function! coffee_tools#DeleteLineAndDedent()
+  let base_indent  = indent('.')
+  let current_line = line('.')
+  let next_line    = nextnonblank(current_line + 1)
+
+  while current_line < line('$') && indent(next_line) > base_indent
+    let current_line = next_line
+    let next_line    = nextnonblank(current_line + 1)
+  endwhile
+
+  let saved_cursor = getpos('.')
+  silent exe line('.').','.current_line.'<'
+  call setpos('.', saved_cursor)
+
+  normal! dd
+endfunction
