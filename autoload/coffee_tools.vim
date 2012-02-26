@@ -1,4 +1,4 @@
-function! coffee_tools#CoffeePreviewOpen()
+function! coffee_tools#OpenPreview()
   if !exists('b:preview_file')
     call coffee_tools#InitPreview()
   endif
@@ -14,18 +14,18 @@ function! coffee_tools#CoffeePreviewOpen()
   call coffee_tools#UpdatePreview()
 endfunction
 
-function! coffee_tools#CoffeePreviewClose()
+function! coffee_tools#ClosePreview()
   if exists('b:preview_file') && bufwinnr(b:preview_file) >= 0
     call coffee_tools#SwitchWindow(b:preview_file)
     quit!
   endif
 endfunction
 
-function! coffee_tools#CoffeePreviewToggle()
+function! coffee_tools#TogglePreview()
   if !exists('b:preview_file') || bufwinnr(b:preview_file) < 0
-    call coffee_tools#CoffeePreviewOpen()
+    call coffee_tools#OpenPreview()
   else
-    call coffee_tools#CoffeePreviewClose()
+    call coffee_tools#ClosePreview()
   endif
 endfunction
 

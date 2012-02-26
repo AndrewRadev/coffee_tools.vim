@@ -14,6 +14,6 @@ if !exists('g:coffee_tools_autojump')
   let g:coffee_tools_autojump = 0
 endif
 
-command! CoffeePreviewOpen   call coffee_tools#CoffeePreviewOpen()
-command! CoffeePreviewClose  call coffee_tools#CoffeePreviewClose()
-command! CoffeePreviewToggle call coffee_tools#CoffeePreviewToggle()
+command! CoffeePreviewOpen   call coffee_tools#OpenPreview()
+command! CoffeePreviewClose  call coffee_tools#ClosePreview()
+command! CoffeePreviewToggle call coffee_tools#TogglePreview()
