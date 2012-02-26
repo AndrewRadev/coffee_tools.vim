@@ -1,9 +1,9 @@
-if exists("g:loaded_coffee_tools") || &cp
+if exists('g:loaded_coffee_tools') || &cp
   finish
 endif
 
-let g:loaded_coffee_tools = '0.3.0' " version number
-let s:keepcpo          = &cpo
+let g:loaded_coffee_tools = '0.0.1' " version number
+let s:keepcpo             = &cpo
 set cpo&vim
 
 if !exists('g:coffee_tools_split_command')
