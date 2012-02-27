@@ -18,4 +18,5 @@ command! CoffeePreviewOpen   call coffee_tools#OpenPreview()
 command! CoffeePreviewClose  call coffee_tools#ClosePreview()
 command! CoffeePreviewToggle call coffee_tools#TogglePreview()
 
-nnoremap <Plug>CoffeeToolsDeleteLineAndDedent :call coffee_tools#DeleteLineAndDedent()<cr>
+nnoremap <Plug>CoffeeToolsDeleteLineAndDedent :     call coffee_tools#DeleteLineAndDedent()<cr>
+xnoremap <Plug>CoffeeToolsOpenLineAndIndent   :<c-u>call coffee_tools#OpenLineAndIndent()<cr>

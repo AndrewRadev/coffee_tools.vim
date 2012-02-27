@@ -78,3 +78,10 @@ function! coffee_tools#DeleteLineAndDedent()
 
   normal! dd
 endfunction
+
+function! coffee_tools#OpenLineAndIndent()
+  let whitespace = repeat(' ', indent("'<"))
+  normal! gv>O
+  exe 's/^\s*/'.whitespace.'/'
+  startinsert!
+endfunction
