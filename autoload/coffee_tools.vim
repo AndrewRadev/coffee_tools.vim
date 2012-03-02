@@ -34,7 +34,7 @@ endfunction
 
 function! coffee_tools#InitPreview()
   let b:preview_file    = tempname().'.js'
-  let b:preview_command = printf('coffee -bp %s > %s 2>&1', shellescape(expand('%')), b:preview_file)
+  let b:preview_command = printf('coffee -p %s > %s 2>&1', shellescape(expand('%')), b:preview_file)
 
   autocmd BufWritePost <buffer>
         \ if bufwinnr(b:preview_file) >= 0    |
