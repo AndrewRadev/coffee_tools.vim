@@ -14,9 +14,19 @@ if !exists('g:coffee_tools_autojump')
   let g:coffee_tools_autojump = 0
 endif
 
+if !exists('g:coffee_tools_default_mappings')
+  let g:coffee_tools_default_mappings = 0
+endif
+
 command! CoffeePreviewOpen   call coffee_tools#OpenPreview()
 command! CoffeePreviewClose  call coffee_tools#ClosePreview()
 command! CoffeePreviewToggle call coffee_tools#TogglePreview()
 
-nnoremap <Plug>CoffeeToolsDeleteLineAndDedent :     call coffee_tools#DeleteLineAndDedent()<cr>
-xnoremap <Plug>CoffeeToolsOpenLineAndIndent   :<c-u>call coffee_tools#OpenLineAndIndent()<cr>
+nnoremap <Plug>CoffeeToolsDeleteAndDedent   :     call coffee_tools#DeleteAndDedent(0)<cr>
+xnoremap <Plug>CoffeeToolsDeleteAndDedent   :<c-u>call coffee_tools#DeleteAndDedent(1)<cr>
+xnoremap <Plug>CoffeeToolsOpenLineAndIndent :<c-u>call coffee_tools#OpenLineAndIndent()<cr>
+
+if g:coffee_tools_default_mappings
+  autocmd FileType coffee nmap <buffer> dd <Plug>CoffeeToolsDeleteAndDedent
+  autocmd FileType coffee xmap <buffer> d <Plug>CoffeeToolsDeleteAndDedent
+endif

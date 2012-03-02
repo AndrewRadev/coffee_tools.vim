@@ -62,9 +62,29 @@ function! coffee_tools#SwitchWindow(bufname)
   exe window.'wincmd w'
 endfunction
 
-function! coffee_tools#DeleteLineAndDedent()
-  let base_indent  = indent('.')
-  let current_line = line('.')
+function! coffee_tools#DeleteAndDedent(visual)
+  if a:visual
+    let depth = ((indent("'>") - indent("'<")) / &sw) + 1
+    call s:Dedent("'>", depth)
+    normal! gvd
+  else
+    call s:Dedent('.', 1)
+    normal! dd
+  endif
+
+  echo
+endfunction
+
+function! coffee_tools#OpenLineAndIndent()
+  let whitespace = repeat(' ', indent("'<"))
+  normal! gv>O
+  exe 's/^\s*/'.whitespace.'/'
+  startinsert!
+endfunction
+
+function! s:Dedent(lineno, depth)
+  let base_indent  = indent(a:lineno)
+  let current_line = line(a:lineno)
   let next_line    = nextnonblank(current_line + 1)
 
   while current_line < line('$') && indent(next_line) > base_indent
@@ -73,15 +93,6 @@ function! coffee_tools#DeleteLineAndDedent()
   endwhile
 
   let saved_cursor = getpos('.')
-  silent exe line('.').','.current_line.'<'
+  silent exe (line(a:lineno) + 1).','.current_line.repeat('<', a:depth)
   call setpos('.', saved_cursor)
-
-  normal! dd
-endfunction
-
-function! coffee_tools#OpenLineAndIndent()
-  let whitespace = repeat(' ', indent("'<"))
-  normal! gv>O
-  exe 's/^\s*/'.whitespace.'/'
-  startinsert!
 endfunction

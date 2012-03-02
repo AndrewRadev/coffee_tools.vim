@@ -1,2 +1,5 @@
 foo = (bar, baz) ->
-  console.log baz
+  foo = (bar, baz) ->
+    bla
+    foo = (bar, baz) ->
+      console.log baz
