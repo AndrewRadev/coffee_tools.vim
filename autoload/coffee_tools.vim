@@ -82,6 +82,23 @@ function! coffee_tools#OpenLineAndIndent()
   startinsert!
 endfunction
 
+function! coffee_tools#Paste(paste_key, register)
+  let whitespace_pattern = '^\(\s*\).*$'
+  let pasted_text        = getreg(a:register)
+  let register_type      = getregtype(a:register)
+  let local_whitespace   = substitute(getline('.'), whitespace_pattern, '\1', '')
+  let pasted_whitespace  = substitute(pasted_text, whitespace_pattern, '\1', '')
+
+  let formatted_lines = []
+  for line in split(pasted_text, "\n")
+    let line = substitute(line, '^'.pasted_whitespace, local_whitespace, '')
+    call add(formatted_lines, line)
+  endfor
+
+  call setreg(a:register, join(formatted_lines, "\n"), register_type)
+  exe 'normal! "'.a:register.a:paste_key
+endfunction
+
 function! s:DedentBelow(lineno, depth)
   if line(a:lineno) == line('$')
     " then it's the last line, don't mind it

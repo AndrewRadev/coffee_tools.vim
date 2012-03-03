@@ -26,7 +26,12 @@ nnoremap <Plug>CoffeeToolsDeleteAndDedent   :     call coffee_tools#DeleteAndDed
 xnoremap <Plug>CoffeeToolsDeleteAndDedent   :<c-u>call coffee_tools#DeleteAndDedent(1)<cr>
 xnoremap <Plug>CoffeeToolsOpenLineAndIndent :<c-u>call coffee_tools#OpenLineAndIndent()<cr>
 
+nnoremap <Plug>CoffeeToolsPasteBelow :call coffee_tools#Paste('p', v:register)<cr>
+nnoremap <Plug>CoffeeToolsPasteAbove :call coffee_tools#Paste('P', v:register)<cr>
+
 if g:coffee_tools_default_mappings
   autocmd FileType coffee nmap <buffer> dd <Plug>CoffeeToolsDeleteAndDedent
   autocmd FileType coffee xmap <buffer> d <Plug>CoffeeToolsDeleteAndDedent
+  autocmd FileType coffee nmap <buffer> p <Plug>CoffeeToolsPasteBelow
+  autocmd FileType coffee nmap <buffer> P <Plug>CoffeeToolsPasteAbove
 endif
