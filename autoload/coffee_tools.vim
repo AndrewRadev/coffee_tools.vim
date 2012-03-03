@@ -65,10 +65,10 @@ endfunction
 function! coffee_tools#DeleteAndDedent(visual)
   if a:visual
     let depth = ((indent("'>") - indent("'<")) / &sw) + 1
-    call s:Dedent("'>", depth)
+    call s:DedentBelow("'>", depth)
     normal! gvd
   else
-    call s:Dedent('.', 1)
+    call s:DedentBelow('.', 1)
     normal! dd
   endif
 
@@ -82,8 +82,9 @@ function! coffee_tools#OpenLineAndIndent()
   startinsert!
 endfunction
 
-function! s:Dedent(lineno, depth)
+function! s:DedentBelow(lineno, depth)
   if line(a:lineno) == line('$')
+    " then it's the last line, don't mind it
     return
   endif
 
@@ -95,6 +96,11 @@ function! s:Dedent(lineno, depth)
     let current_line = next_line
     let next_line    = nextnonblank(current_line + 1)
   endwhile
+
+  if current_line == line(a:lineno)
+    " then there's nothing to dedent
+    return
+  endif
 
   let saved_cursor = getpos('.')
   silent exe (line(a:lineno) + 1).','.current_line.repeat('<', a:depth)
