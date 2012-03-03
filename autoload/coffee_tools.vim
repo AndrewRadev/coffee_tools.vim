@@ -83,6 +83,10 @@ function! coffee_tools#OpenLineAndIndent()
 endfunction
 
 function! s:Dedent(lineno, depth)
+  if line(a:lineno) == line('$')
+    return
+  endif
+
   let base_indent  = indent(a:lineno)
   let current_line = line(a:lineno)
   let next_line    = nextnonblank(current_line + 1)
