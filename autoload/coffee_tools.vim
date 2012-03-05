@@ -68,7 +68,9 @@ function! coffee_tools#DeleteAndDedent(visual)
     call s:DedentBelow("'>", depth)
     normal! gvd
   else
-    call s:DedentBelow('.', 1)
+    if getline('.') !~ '^\s*$'
+      call s:DedentBelow('.', 1)
+    endif
     normal! dd
   endif
 
