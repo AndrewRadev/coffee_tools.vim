@@ -18,6 +18,10 @@ if !exists('g:coffee_tools_default_mappings')
   let g:coffee_tools_default_mappings = 0
 endif
 
+if !exists('g:coffee_tools_invasive_mappings')
+  let g:coffee_tools_invasive_mappings = 0
+endif
+
 command! CoffeePreviewOpen   call coffee_tools#OpenPreview()
 command! CoffeePreviewClose  call coffee_tools#ClosePreview()
 command! CoffeePreviewToggle call coffee_tools#TogglePreview()
@@ -29,9 +33,16 @@ xnoremap <Plug>CoffeeToolsOpenLineAndIndent :<c-u>call coffee_tools#OpenLineAndI
 nnoremap <Plug>CoffeeToolsPasteBelow :call coffee_tools#Paste('p', v:register)<cr>
 nnoremap <Plug>CoffeeToolsPasteAbove :call coffee_tools#Paste('P', v:register)<cr>
 
-if g:coffee_tools_default_mappings
+if g:coffee_tools_invasive_mappings
   autocmd FileType coffee nmap <buffer> dd <Plug>CoffeeToolsDeleteAndDedent
-  autocmd FileType coffee xmap <buffer> d <Plug>CoffeeToolsDeleteAndDedent
-  autocmd FileType coffee nmap <buffer> p <Plug>CoffeeToolsPasteBelow
-  autocmd FileType coffee nmap <buffer> P <Plug>CoffeeToolsPasteAbove
+  autocmd FileType coffee xmap <buffer> d  <Plug>CoffeeToolsDeleteAndDedent
+  autocmd FileType coffee nmap <buffer> p  <Plug>CoffeeToolsPasteBelow
+  autocmd FileType coffee nmap <buffer> P  <Plug>CoffeeToolsPasteAbove
+endif
+
+if g:coffee_tools_default_mappings
+  autocmd FileType coffee nmap <buffer> <localleader>dd <Plug>CoffeeToolsDeleteAndDedent
+  autocmd FileType coffee xmap <buffer> <localleader>d  <Plug>CoffeeToolsDeleteAndDedent
+  autocmd FileType coffee nmap <buffer> <localleader>p  <Plug>CoffeeToolsPasteBelow
+  autocmd FileType coffee nmap <buffer> <localleader>P  <Plug>CoffeeToolsPasteAbove
 endif
