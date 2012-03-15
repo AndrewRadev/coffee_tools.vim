@@ -46,3 +46,6 @@ if g:coffee_tools_default_mappings
   autocmd FileType coffee nmap <buffer> <localleader>p  <Plug>CoffeeToolsPasteBelow
   autocmd FileType coffee nmap <buffer> <localleader>P  <Plug>CoffeeToolsPasteAbove
 endif
+
+autocmd Syntax coffee syntax match coffeeConstructor +\<\zsconstructor\ze:\s*\%((.*)\)\=\s*[-=]>+
+autocmd Syntax coffee hi link coffeeConstructor Operator
