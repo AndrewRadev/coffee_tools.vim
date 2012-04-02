@@ -48,4 +48,7 @@ if g:coffee_tools_default_mappings
 endif
 
 autocmd Syntax coffee syntax match coffeeConstructor +\<\zsconstructor\ze:\s*\%((.*)\)\=\s*[-=]>+
+autocmd Syntax coffee syntax match nodejsKeywords +module\.exports\|module\|exports\|global+
+
 autocmd Syntax coffee hi link coffeeConstructor Operator
+autocmd Syntax coffee hi link nodejsKeywords    Operator
