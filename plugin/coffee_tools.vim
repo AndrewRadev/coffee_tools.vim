@@ -22,6 +22,10 @@ if !exists('g:coffee_tools_invasive_mappings')
   let g:coffee_tools_invasive_mappings = 0
 endif
 
+if !exists('g:coffee_tools_function_text_object')
+  let g:coffee_tools_function_text_object = 1
+endif
+
 command! CoffeePreviewOpen   call coffee_tools#OpenPreview()
 command! CoffeePreviewClose  call coffee_tools#ClosePreview()
 command! CoffeePreviewToggle call coffee_tools#TogglePreview()
@@ -45,6 +49,13 @@ if g:coffee_tools_default_mappings
   autocmd FileType coffee xmap <buffer> <localleader>d  <Plug>CoffeeToolsDeleteAndDedent
   autocmd FileType coffee nmap <buffer> <localleader>p  <Plug>CoffeeToolsPasteBelow
   autocmd FileType coffee nmap <buffer> <localleader>P  <Plug>CoffeeToolsPasteAbove
+endif
+
+if g:coffee_tools_function_text_object
+  onoremap if :<c-u>call coffee_tools#FunctionTextObject('i')<cr>
+  onoremap af :<c-u>call coffee_tools#FunctionTextObject('a')<cr>
+  xnoremap if :<c-u>call coffee_tools#FunctionTextObject('i')<cr>
+  xnoremap af :<c-u>call coffee_tools#FunctionTextObject('a')<cr>
 endif
 
 autocmd Syntax coffee syntax match coffeeConstructor +\<\zsconstructor\ze:\s*\%((.*)\)\=\s*[-=]>+

@@ -101,6 +101,33 @@ function! coffee_tools#Paste(paste_key, register)
   exe 'normal! "'.a:register.a:paste_key
 endfunction
 
+function! coffee_tools#FunctionTextObject(type)
+  let function_start = search('\((.\{-})\)\=\s*[-=]>$', 'Wbc')
+  if function_start < 0
+    return
+  endif
+
+  let body_start = function_start + 1
+  if body_start > line('$') || indent(nextnonblank(body_start)) <= indent(function_start)
+    if a:type == 'a'
+      normal! vg_
+    endif
+
+    return
+  endif
+
+  let indent_limit = s:LowerIndentLimit(body_start)
+
+  if a:type == 'i'
+    let start = body_start
+  else
+    let start = function_start
+  endif
+
+  call s:MarkVisual('v', start, indent_limit)
+endfunction
+
+" TODO (2012-04-03) Refactor to use *IndentLimit helper
 function! s:DedentBelow(lineno, depth)
   if line(a:lineno) == line('$')
     " then it's the last line, don't mind it
@@ -124,4 +151,42 @@ function! s:DedentBelow(lineno, depth)
   let saved_cursor = getpos('.')
   silent exe (line(a:lineno) + 1).','.current_line.repeat('<', a:depth)
   call setpos('.', saved_cursor)
+endfunction
+
+function! s:LowerIndentLimit(lineno)
+  let base_indent  = indent(a:lineno)
+  let current_line = a:lineno
+  let next_line    = nextnonblank(current_line + 1)
+
+  while current_line < line('$') && indent(next_line) >= base_indent
+    let current_line = next_line
+    let next_line    = nextnonblank(current_line + 1)
+  endwhile
+
+  return current_line
+endfunction
+
+function! s:UpperIndentLimit(lineno)
+  let base_indent  = indent(a:lineno)
+  let current_line = a:lineno
+  let prev_line    = prevnonblank(current_line - 1)
+
+  while current_line > 0 && indent(prev_line) >= base_indent
+    let current_line = prev_line
+    let prev_line    = prevnonblank(current_line - 1)
+  endwhile
+
+  return current_line
+endfunction
+
+function! s:MarkVisual(command, start_line, end_line)
+  if a:start_line != line('.')
+    exe a:start_line
+  endif
+
+  if a:end_line > a:start_line
+    exe 'normal! '.a:command.(a:end_line - a:start_line).'jg_'
+  else
+    exe 'normal! '.a:command.'g_'
+  endif
 endfunction
