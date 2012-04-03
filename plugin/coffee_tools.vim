@@ -26,6 +26,10 @@ if !exists('g:coffee_tools_function_text_object')
   let g:coffee_tools_function_text_object = 1
 endif
 
+if !exists('g:coffee_tools_syntax_extensions')
+  let g:coffee_tools_syntax_extensions = 1
+endif
+
 command! CoffeePreviewOpen   call coffee_tools#OpenPreview()
 command! CoffeePreviewClose  call coffee_tools#ClosePreview()
 command! CoffeePreviewToggle call coffee_tools#TogglePreview()
@@ -58,8 +62,10 @@ if g:coffee_tools_function_text_object
   xnoremap af :<c-u>call coffee_tools#FunctionTextObject('a')<cr>
 endif
 
-autocmd Syntax coffee syntax match coffeeConstructor +\<\zsconstructor\ze:\s*\%((.*)\)\=\s*[-=]>+
-autocmd Syntax coffee syntax match nodejsKeywords +module\.exports\|module\|exports\|global+
+if g:coffee_tools_syntax_extensions
+  autocmd Syntax coffee syntax match coffeeConstructor +\<\zsconstructor\ze:\s*\%((.*)\)\=\s*[-=]>+
+  autocmd Syntax coffee syntax match nodejsKeywords    +module\.exports\|module\|exports\|global+
 
-autocmd Syntax coffee hi link coffeeConstructor Operator
-autocmd Syntax coffee hi link nodejsKeywords    Operator
+  autocmd Syntax coffee hi link coffeeConstructor Operator
+  autocmd Syntax coffee hi link nodejsKeywords    Operator
+endif
