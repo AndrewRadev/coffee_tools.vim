@@ -103,7 +103,7 @@ endfunction
 
 function! coffee_tools#FunctionTextObject(type)
   let function_start = search('\((.\{-})\)\=\s*[-=]>$', 'Wbc')
-  if function_start < 0
+  if function_start <= 0
     return
   endif
 
