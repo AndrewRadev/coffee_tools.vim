@@ -41,11 +41,14 @@ xnoremap <Plug>CoffeeToolsOpenLineAndIndent :<c-u>call coffee_tools#OpenLineAndI
 nnoremap <Plug>CoffeeToolsPasteBelow :call coffee_tools#Paste('p', v:register)<cr>
 nnoremap <Plug>CoffeeToolsPasteAbove :call coffee_tools#Paste('P', v:register)<cr>
 
+nnoremap <Plug>CoffeeToolsToggleFunctionArrow :call coffee_tools#ToggleFunctionArrow()<cr>
+
 if g:coffee_tools_invasive_mappings
   autocmd FileType coffee nmap <buffer> dd <Plug>CoffeeToolsDeleteAndDedent
   autocmd FileType coffee xmap <buffer> d  <Plug>CoffeeToolsDeleteAndDedent
   autocmd FileType coffee nmap <buffer> p  <Plug>CoffeeToolsPasteBelow
   autocmd FileType coffee nmap <buffer> P  <Plug>CoffeeToolsPasteAbove
+  autocmd FileType coffee nmap <buffer> -  <Plug>CoffeeToolsToggleFunctionArrow
 endif
 
 if g:coffee_tools_default_mappings
@@ -53,6 +56,7 @@ if g:coffee_tools_default_mappings
   autocmd FileType coffee xmap <buffer> <localleader>d  <Plug>CoffeeToolsDeleteAndDedent
   autocmd FileType coffee nmap <buffer> <localleader>p  <Plug>CoffeeToolsPasteBelow
   autocmd FileType coffee nmap <buffer> <localleader>P  <Plug>CoffeeToolsPasteAbove
+  autocmd FileType coffee nmap <buffer> <localleader>-  <Plug>CoffeeToolsToggleFunctionArrow
 endif
 
 if g:coffee_tools_function_text_object

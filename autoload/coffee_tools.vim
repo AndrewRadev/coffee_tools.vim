@@ -127,6 +127,22 @@ function! coffee_tools#FunctionTextObject(type)
   call s:MarkVisual('v', start, indent_limit)
 endfunction
 
+function! coffee_tools#ToggleFunctionArrow()
+  let line = getline('.')
+  let double_arrow_pattern = '\s\zs=>\ze\%(\s\|$\)'
+  let single_arrow_pattern = '\s\zs->\ze\%(\s\|$\)'
+
+  let saved_cursor = getpos('.')
+
+  if line =~ double_arrow_pattern
+    exe 's/'.double_arrow_pattern.'/->/'
+  elseif line =~ single_arrow_pattern
+    exe 's/'.single_arrow_pattern.'/=>/'
+  endif
+
+  call setpos('.', saved_cursor)
+endfunction
+
 " TODO (2012-04-03) Refactor to use *IndentLimit helper
 function! s:DedentBelow(lineno, depth)
   if line(a:lineno) == line('$')
