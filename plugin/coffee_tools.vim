@@ -60,10 +60,10 @@ if g:coffee_tools_default_mappings
 endif
 
 if g:coffee_tools_function_text_object
-  onoremap if :<c-u>call coffee_tools#FunctionTextObject('i')<cr>
-  onoremap af :<c-u>call coffee_tools#FunctionTextObject('a')<cr>
-  xnoremap if :<c-u>call coffee_tools#FunctionTextObject('i')<cr>
-  xnoremap af :<c-u>call coffee_tools#FunctionTextObject('a')<cr>
+  onoremap <buffer> if :<c-u>call coffee_tools#FunctionTextObject('i')<cr>
+  onoremap <buffer> af :<c-u>call coffee_tools#FunctionTextObject('a')<cr>
+  xnoremap <buffer> if :<c-u>call coffee_tools#FunctionTextObject('i')<cr>
+  xnoremap <buffer> af :<c-u>call coffee_tools#FunctionTextObject('a')<cr>
 endif
 
 if g:coffee_tools_syntax_extensions
