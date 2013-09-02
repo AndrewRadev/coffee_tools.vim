@@ -34,9 +34,10 @@ command! CoffeePreviewOpen   call coffee_tools#OpenPreview()
 command! CoffeePreviewClose  call coffee_tools#ClosePreview()
 command! CoffeePreviewToggle call coffee_tools#TogglePreview()
 
-nnoremap <Plug>CoffeeToolsDeleteAndDedent   :     call coffee_tools#DeleteAndDedent(0)<cr>
-xnoremap <Plug>CoffeeToolsDeleteAndDedent   :<c-u>call coffee_tools#DeleteAndDedent(1)<cr>
-xnoremap <Plug>CoffeeToolsOpenLineAndIndent :<c-u>call coffee_tools#OpenLineAndIndent()<cr>
+nnoremap <Plug>CoffeeToolsDeleteAndDedent   :     call coffee_tools#DeleteWrappingLine('n')<cr>
+xnoremap <Plug>CoffeeToolsDeleteAndDedent   :<c-u>call coffee_tools#DeleteWrappingLine('v')<cr>
+nnoremap <Plug>CoffeeToolsOpenLineAndIndent :     call coffee_tools#OpenWrappingLineAbove('n')<cr>
+xnoremap <Plug>CoffeeToolsOpenLineAndIndent :<c-u>call coffee_tools#OpenWrappingLineAbove('v')<cr>
 
 nnoremap <Plug>CoffeeToolsPasteBelow :call coffee_tools#Paste('p', v:register)<cr>
 nnoremap <Plug>CoffeeToolsPasteAbove :call coffee_tools#Paste('P', v:register)<cr>
@@ -52,8 +53,11 @@ if g:coffee_tools_invasive_mappings
 endif
 
 if g:coffee_tools_default_mappings
-  autocmd FileType coffee nmap <buffer> <localleader>dd <Plug>CoffeeToolsDeleteAndDedent
-  autocmd FileType coffee xmap <buffer> <localleader>d  <Plug>CoffeeToolsDeleteAndDedent
+  autocmd FileType coffee nmap <buffer> <localleader>dh <Plug>CoffeeToolsDeleteAndDedent
+  autocmd FileType coffee xmap <buffer> <localleader>dh <Plug>CoffeeToolsDeleteAndDedent
+  autocmd FileType coffee nmap <buffer> <localleader>O <Plug>CoffeeToolsOpenLineAndIndent
+  autocmd FileType coffee xmap <buffer> <localleader>O <Plug>CoffeeToolsOpenLineAndIndent
+
   autocmd FileType coffee nmap <buffer> <localleader>p  <Plug>CoffeeToolsPasteBelow
   autocmd FileType coffee nmap <buffer> <localleader>P  <Plug>CoffeeToolsPasteAbove
   autocmd FileType coffee nmap <buffer> <localleader>-  <Plug>CoffeeToolsToggleFunctionArrow

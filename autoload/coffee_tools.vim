@@ -62,26 +62,48 @@ function! coffee_tools#SwitchWindow(bufname)
   exe window.'wincmd w'
 endfunction
 
-function! coffee_tools#DeleteAndDedent(visual)
-  if a:visual
-    let depth = ((indent("'>") - indent("'<")) / &sw) + 1
-    call s:DedentBelow("'>", depth)
-    normal! gvd
+function! coffee_tools#OpenWrappingLineAbove(mode)
+  if a:mode ==# 'v'
+    let start = line("'<")
+    let end   = line("'>")
   else
-    if getline('.') !~ '^\s*$'
-      call s:DedentBelow('.', 1)
+    let start = line('.')
+    let end   = s:LowerIndentLimit(start)
+  endif
+
+  let indent = indent(start)
+
+  call s:IncreaseIndent(start, end, 1)
+  normal! O
+  call s:SetIndent(line('.'), line('.'), indent)
+  call feedkeys('A')
+
+  undojoin
+endfunction
+
+function! coffee_tools#DeleteWrappingLine(mode)
+  if a:mode ==# 'v'
+    let start_line       = line("'<")
+    let end_line         = line("'>")
+    let new_current_line = nextnonblank(end_line + 1)
+
+    if end_line == line('$')
+      let indent = 0
+    else
+      let indent = indent(new_current_line) - indent(start_line)
     endif
+
+    let amount = indent / &sw
+    exe "'<,'>delete"
+  else
+    let amount = 1
     normal! dd
   endif
 
-  echo
-endfunction
+  let start = line('.')
+  let end   = s:LowerIndentLimit(start)
 
-function! coffee_tools#OpenLineAndIndent()
-  let whitespace = repeat(' ', indent("'<"))
-  normal! gv>O
-  exe 's/^\s*/'.whitespace.'/'
-  startinsert!
+  call s:DecreaseIndent(start, end, amount)
 endfunction
 
 function! coffee_tools#Paste(paste_key, register)
@@ -143,32 +165,6 @@ function! coffee_tools#ToggleFunctionArrow()
   call setpos('.', saved_cursor)
 endfunction
 
-" TODO (2012-04-03) Refactor to use *IndentLimit helper
-function! s:DedentBelow(lineno, depth)
-  if line(a:lineno) == line('$')
-    " then it's the last line, don't mind it
-    return
-  endif
-
-  let base_indent  = indent(a:lineno)
-  let current_line = line(a:lineno)
-  let next_line    = nextnonblank(current_line + 1)
-
-  while current_line < line('$') && indent(next_line) > base_indent
-    let current_line = next_line
-    let next_line    = nextnonblank(current_line + 1)
-  endwhile
-
-  if current_line == line(a:lineno)
-    " then there's nothing to dedent
-    return
-  endif
-
-  let saved_cursor = getpos('.')
-  silent exe (line(a:lineno) + 1).','.current_line.repeat('<', a:depth)
-  call setpos('.', saved_cursor)
-endfunction
-
 function! s:LowerIndentLimit(lineno)
   let base_indent  = indent(a:lineno)
   let current_line = a:lineno
@@ -205,4 +201,24 @@ function! s:MarkVisual(command, start_line, end_line)
   else
     exe 'normal! '.a:command.'g_'
   endif
+endfunction
+
+function! s:SetIndent(from, to, indent)
+  let saved_cursor = getpos('.')
+  exe a:from.','.a:to.'s/^\s*/'.repeat(' ', a:indent)
+  call setpos('.', saved_cursor)
+endfunction
+
+function! s:IncreaseIndent(from, to, amount)
+  let saved_cursor = getpos('.')
+  let command = repeat('>', a:amount)
+  exe a:from.','.a:to.command
+  call setpos('.', saved_cursor)
+endfunction
+
+function! s:DecreaseIndent(from, to, amount)
+  let saved_cursor = getpos('.')
+  let command = repeat('<', a:amount)
+  exe a:from.','.a:to.command
+  call setpos('.', saved_cursor)
 endfunction
