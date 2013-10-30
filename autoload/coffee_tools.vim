@@ -136,7 +136,7 @@ function! coffee_tools#FunctionTextObject(type)
   let body_start = function_start + 1
   if body_start > line('$') || indent(nextnonblank(body_start)) <= indent(function_start)
     if a:type == 'a'
-      normal! vg_
+      exe "normal! ".visualmode()."g_"
     endif
 
     return
@@ -150,7 +150,7 @@ function! coffee_tools#FunctionTextObject(type)
     let start = function_start
   endif
 
-  call s:MarkVisual('v', start, indent_limit)
+  call s:MarkVisual(visualmode(), start, indent_limit)
 endfunction
 
 function! coffee_tools#ToggleFunctionArrow()
