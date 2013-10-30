@@ -124,8 +124,12 @@ function! coffee_tools#Paste(paste_key, register)
 endfunction
 
 function! coffee_tools#FunctionTextObject(type)
-  let function_start = search('\((.\{-})\)\=\s*[-=]>$', 'Wbc')
+  let saved_cursor = getpos('.')
+  normal! $
+
+  let function_start = search('\(\k\+\s*[=:]\s*\)\=\%((.\{-})\)\=\s*[-=]>$', 'Wbc')
   if function_start <= 0
+    call setpos('.', saved_cursor)
     return
   endif
 
