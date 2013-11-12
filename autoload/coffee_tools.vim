@@ -198,6 +198,7 @@ endfunction
 function! s:MarkVisual(command, start_line, end_line)
   if a:start_line != line('.')
     exe a:start_line
+    normal! ^
   endif
 
   if a:end_line > a:start_line
